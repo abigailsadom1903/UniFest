@@ -1,0 +1,238 @@
+/* --- 1. GLOBAL VARIABLES & RESET (Original Theme) --- */
+:root {
+    --primary-color: #800000;    /* Maroon */
+    --secondary-color: #333;     /* Dark Grey */
+    --bg-color: #f4f4f4;         /* Light Grey Background */
+    --text-color: #333;
+}
+
+body {
+    font-family: Arial, sans-serif; /* Back to standard font */
+    background-color: var(--bg-color);
+    margin: 0;
+    padding: 0;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* --- 2. HEADER & NAVIGATION (Original) --- */
+header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 15px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.navbar {
+    width: 90%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.nav-links a:hover {
+    text-decoration: underline;
+}
+
+/* Notification Badge (Kept this because it's functional) */
+.badge {
+    background-color: red;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    vertical-align: top;
+    margin-left: -5px;
+}
+
+/* --- 3. LAYOUT & CONTAINERS (Original) --- */
+.container {
+    width: 80%;
+    margin: auto;
+    padding: 20px 0;
+}
+
+/* Hero Section (Restored to original look) */
+.hero {
+    background: linear-gradient(rgba(128,0,0,0.7), rgba(128,0,0,0.7)), url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 100px 20px;
+    text-align: center;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin: 0;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-top: 10px;
+}
+
+/* --- 4. FORMS & BUTTONS (Original Style for Main Site) --- */
+.btn {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.btn:hover {
+    background-color: #5a0000;
+}
+
+/* Standard Inputs (Restored for Search Bar & Dashboard) */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Fixes padding issues */
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* --- 5. TABLES (Restored Original) --- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: white;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+/* --- 6. UTILITIES --- */
+.event-card {
+    background: white;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+    color: #666;
+    border-top: 1px solid #ccc;
+}
+
+
+/* =========================================
+   ENHANCED LOGIN & REGISTER PAGES ONLY
+   (This section only affects pages with login/register forms)
+   ========================================= */
+
+/* 1. Center the form on the screen */
+body:has(form[action="login.php"]),
+body:has(form[action="register.php"]) {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* 2. Style the Container as a "Card" */
+.container:has(form[action="login.php"]),
+.container:has(form[action="register.php"]) {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1); /* Soft shadow */
+    max-width: 500px; /* Make it narrower and neater */
+    margin: 50px auto; /* Center horizontally */
+    border-top: 5px solid var(--primary-color); /* Maroon accent line on top */
+}
+
+/* Register page needs to be wider */
+.container:has(form[action="register.php"]) {
+    max-width: 700px;
+}
+
+/* 3. Typography Updates for Login/Register */
+.container:has(form[action="login.php"]) h2,
+.container:has(form[action="register.php"]) h2 {
+    text-align: center;
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Nicer font for login */
+}
+
+/* 4. The Big Button (Only for Login/Register) */
+form[action="login.php"] button,
+form[action="register.php"] button {
+    width: 100%;
+    padding: 14px;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 10px;
+    box-shadow: 0 4px 10px rgba(128, 0, 0, 0.3);
+    border-radius: 50px;
+}
+
+form[action="login.php"] button:hover,
+form[action="register.php"] button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(128, 0, 0, 0.4);
+}
+
+/* 5. Input Glow (Only for Login/Register) */
+form[action="login.php"] input:focus,
+form[action="register.php"] input:focus,
+form[action="register.php"] select:focus {
+    background-color: #fff;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(128, 0, 0, 0.1);
+    outline: none;
+}
