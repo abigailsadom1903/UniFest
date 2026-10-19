@@ -1,11 +1,4 @@
 PROJECT: UniFest - Campus Event Management System
-TEAM MEMBERS:
-1.LIANA SYAFIERA BINTI LAI CHIU HIUNG
-2.ABIGAIL ALAU R.SADOM
-3.NURAINI BINTI MATNOR
-4.OLYN OLIVIA HERMAN
-5.NANDA RISTAH BINTI MUHD YUSUF
-
 --- PROJECT DESCRIPTION ---
 UniFest is a web-based Campus Event Management System designed to help 
 students and staff organize, browse, and register for university events. 
