@@ -12,9 +12,12 @@ A PHP and MySQL web platform that helps students, staff and the public organise,
 - [User Roles](#user-roles)
 - [Technology Stack](#technology-stack)
 - [Project Structure](#project-structure)
+- [Architecture](#architecture)
 - [Database](#database)
+- [Key Implementation Decisions](#key-implementation-decisions)
 - [Installation](#installation)
 - [Security Notes](#security-notes)
+- [Known Limitations](#known-limitations)
 - [Author](#author)
 
 ---
@@ -97,6 +100,28 @@ UniFest/
 └── unifest_db.sql     # Database schema and sample data
 ```
 
+## Architecture
+
+UniFest is a **procedural, page-per-action PHP application** with shared includes rather than a framework.
+
+- **`config/db.php`** creates a single PDO connection (`$pdo`) that pages include.
+- **`includes/`** holds the shared layout (`header.php`, `footer.php`) and helper functions (`functions.php`).
+- **Top-level pages and handlers** (for example `create_event.php`, `edit_event.php`, `view_participants.php`, `promote_user.php`) each handle one action and redirect back to a listing page.
+- **`admin/`, `user_dashboard/` and `feedback/`** group the administrator, participant and feedback pages.
+
+```
+Browser ──▶ page / handler (.php)
+              │  include config/db.php  ($pdo)
+              │  include includes/header.php, functions.php
+              ▼
+           MySQL (UniFest_db)
+              │
+              ▼
+   addNotification() / sendEmail()  ──▶  notifications table / email_log.txt
+```
+
+The `role` stored on each user record (admin, staff, student, public) determines which features a user can use.
+
 ## Database
 
 Database name: `UniFest_db`
@@ -108,6 +133,24 @@ Database name: `UniFest_db`
 | `registrations` | Links users to events with a status |
 | `feedback` | Ratings and comments per event and user |
 | `notifications` | In-app messages for users, with read status |
+
+### Design notes
+
+- **Five InnoDB tables** (`users`, `events`, `registrations`, `feedback`, `notifications`) using `utf8mb4`.
+- **Relationships:** a user organises many events and registers for many events; each event has many registrations and feedback entries; each user has many notifications.
+- **ENUM columns** keep event type, mode, status (`pending`, `approved`, `archived`), visibility and user role consistent at the database level.
+- **Unique `email`** on `users` prevents duplicate accounts.
+- **Cascade deletes** on `events`, `feedback` and `notifications` keep related data tidy when a user or event is removed.
+- **`registrations` foreign keys have no `ON DELETE` rule**, so a user or event with registrations cannot be deleted until those rows are removed.
+
+## Key Implementation Decisions
+
+- **PDO with prepared statements** and `ERRMODE_EXCEPTION`, so database errors surface as exceptions rather than silent failures.
+- **Hashed passwords** are stored in the `password` column.
+- **Notification helpers are centralised** in `includes/functions.php` (`addNotification`, `sendEmail`), so every page notifies users the same way.
+- **Event lifecycle as an enum** (`pending` → `approved` → `archived`) lets events be reviewed before publication and retired without deleting history.
+- **A visibility flag** shows an event to everyone or only to university members.
+- **Database-enforced consistency** through ENUMs and foreign keys rather than relying only on application checks.
 
 ## Installation
 
@@ -150,6 +193,14 @@ Database name: `UniFest_db`
 - The sample database ships with demo accounts for local testing only. Change their passwords, or remove them, before any real deployment.
 - Do not publish real credentials in the repository or in documentation.
 - Keep uploaded posters and configuration files out of version control when they contain private information.
+
+## Known Limitations
+
+- **Emails are simulated.** `sendEmail()` writes each message to `email_log.txt` instead of sending it. Integrate an SMTP service (for example PHPMailer) for real delivery.
+- **Default database credentials** (`root`, empty password) are set in `config/db.php` for XAMPP. Change them for any other environment.
+- **Seeded accounts share one password hash.** Change these passwords after importing the database.
+- **Some seeded `registrations` rows have a blank `status`.** Valid values are `confirmed` and `cancelled`.
+- **Not hardened for production.** HTTPS, CSRF tokens, rate limiting and automated tests are not included.
 
 ## Author
 
